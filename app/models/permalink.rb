@@ -3,23 +3,30 @@ class Permalink < ActiveRecord::Base
   belongs_to :resource, :polymorphic => true
 
   validates :path, :presence => true, :uniqueness => {:case_sensitive => false}
-  validates :resource, :presence => true
+  #validates :resource, :presence => true
 
   validate  :path_does_not_match_existing_route
   validate  :path_is_valid_url
-
+  
   after_update :create_old_permalink
   
-  def generate_unique_path!(text)
-    path_name_root = text.to_url
-    unique_path_name = path_name_root.dup
-    permalinks = new_record? ? self.class : self.class.where("id != ?",self.id)
-    count = 0
-    while permalinks.exists?(:path => unique_path_name)
-      count += 1
-      unique_path_name = "#{path_name_root}-#{count}"
-    end    
-    self.path = unique_path_name
+  def initialize(*args)
+    super(*args)
+    generate_unique_path!
+  end
+  
+  def generate_unique_path!(title = resource.to_s)
+    if path.blank? && title.present?
+      path_name_root = title.to_url
+      unique_path_name = path_name_root.dup
+      permalinks = new_record? ? self.class : self.class.where("id != ?",self.id)
+      count = 0
+      while permalinks.exists?(:path => unique_path_name)
+        count += 1
+        unique_path_name = "#{path_name_root}-#{count}"
+      end    
+      self.path = unique_path_name
+    end
   end
   
   def resource_path
