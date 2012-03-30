@@ -4,11 +4,6 @@ module YmPermalinks::Permalinkable
     base.has_one :permalink, :as => :resource, :conditions => {:active => true}
     base.accepts_nested_attributes_for :permalink
     base.before_validation :set_permalink_path
-    base.alias_method_chain :permalink, :build
-  end
-  
-  def permalink_with_build
-    permalink_without_build || self.build_permalink
   end
   
   private
