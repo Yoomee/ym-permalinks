@@ -12,3 +12,5 @@ gemspec
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
+
+gem "ym_core", :path => "#{File.dirname(__FILE__)}/../ym_core"
