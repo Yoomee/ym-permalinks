@@ -48,7 +48,7 @@ class Permalink < ActiveRecord::Base
   end
   
   def path_is_valid_url
-    if path != path.to_url
+    if path.present? && (path != path.to_url)
       errors.add(:path, "is invalid")
     end
   end
