@@ -7,11 +7,11 @@ require "ym_permalinks/version"
 Gem::Specification.new do |s|
   s.name        = "ym_permalinks"
   s.version     = YmPermalinks::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of YmPermalinks."
-  s.description = "TODO: Description of YmPermalinks."
+  s.authors     = ["Matt Atkins", "Ian Mooney", "Si Wilkins"]
+  s.email       = ["matt@yoomee.com", "ian@yoomee.com", "si@yoomee.com"]
+  s.homepage    = "http://www.yoomee.com"
+  s.summary     = "Summary of YmPermalinks."
+  s.description = "Description of YmPermalinks."
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
