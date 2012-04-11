@@ -2,9 +2,6 @@ module ActionDispatch
   module Routing
     module UrlFor
       def url_for_with_permalinks(options = nil)
-        puts "\n\n"
-        puts options.inspect
-        puts "\n\n"
         case options
         when nil, String
           url_for_without_permalinks(options)
