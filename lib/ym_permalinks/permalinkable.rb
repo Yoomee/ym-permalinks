@@ -1,9 +1,8 @@
 module YmPermalinks::Permalinkable
   def self.included(base)
     base.has_many :permalinks, :as => :resource, :autosave => true, :dependent => :destroy
-    base.has_one :permalink, :as => :resource, :conditions => {:active => true}
+    base.has_one :permalink, :as => :resource, :conditions => {:active => true}, :autosave => true
     base.before_validation :set_permalink_path
-    base.after_update :save_permalink!
   end
   
   def permalink_path
@@ -15,10 +14,6 @@ module YmPermalinks::Permalinkable
   end
   
   private
-  def save_permalink!
-    permalink.try(:save)
-  end
-  
   def set_permalink_path
     return true unless permalink
     if permalink.path.present?
