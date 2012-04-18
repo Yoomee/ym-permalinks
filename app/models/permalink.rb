@@ -2,13 +2,13 @@ class Permalink < ActiveRecord::Base
   
   belongs_to :resource, :polymorphic => true
 
-  validates :path, :presence => true, :uniqueness => {:case_sensitive => false}
+  validates :path, :presence => true, :uniqueness => {:case_sensitive => false, :unless => :old_exists?}
   #validates :resource, :presence => true
 
   validate  :path_does_not_match_existing_route
   validate  :path_is_valid_url
   
-  after_update :create_old_permalink
+  after_update :handle_old_permalinks
   
   def initialize(*args)
     super(*args)
@@ -34,8 +34,17 @@ class Permalink < ActiveRecord::Base
   end
 
   private
-  def create_old_permalink
+  def handle_old_permalinks
+    old_versions.destroy_all
     Permalink.create(:path => path_was, :resource => resource, :active => false)
+  end
+
+  def old_exists?
+    old_versions.present?
+  end
+
+  def old_versions
+    Permalink.where(:resource_id => resource.id, :resource_type => resource.class.to_s, :path => path).where(["id <> ?", id])
   end
   
   def path_does_not_match_existing_route

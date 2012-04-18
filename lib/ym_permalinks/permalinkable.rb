@@ -3,6 +3,7 @@ module YmPermalinks::Permalinkable
     base.has_many :permalinks, :as => :resource, :autosave => true, :dependent => :destroy
     base.has_one :permalink, :as => :resource, :conditions => {:active => true}, :autosave => true
     base.before_validation :set_permalink_path
+    base.after_validation :set_permalink_errors
   end
   
   def permalink_path
@@ -14,6 +15,11 @@ module YmPermalinks::Permalinkable
   end
   
   private
+  def set_permalink_errors
+    permalink_errors = permalink.try(:errors).try(:get, :path)
+    errors.add(:permalink_path, permalink_errors) if permalink_errors.present?
+  end
+  
   def set_permalink_path
     return true unless permalink
     if permalink.path.present?
