@@ -35,7 +35,7 @@ class Permalink < ActiveRecord::Base
 
   private
   def handle_old_permalinks
-    old_versions.destroy_all
+    old_versions.destroy_all if old_versions.present?
     Permalink.create(:path => path_was, :resource => resource, :active => false)
   end
 
@@ -44,6 +44,7 @@ class Permalink < ActiveRecord::Base
   end
 
   def old_versions
+    return [] if resource.nil?
     Permalink.where(:resource_id => resource.id, :resource_type => resource.class.to_s, :path => path).where(["id <> ?", id])
   end
   
