@@ -1,4 +1,5 @@
 require 'stringex'
+require 'ym_core'
 require "ym_permalinks/permalinks_handler"
 require "ym_permalinks/engine"
 
