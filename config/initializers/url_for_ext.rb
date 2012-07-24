@@ -6,7 +6,7 @@ module ActionDispatch
         when nil, String
           url_for_without_permalinks(options)
         when Hash
-          if options[:action] == "show" && permalink = extract_permalink(options)
+          if (options.delete(:permalink) != false) && options[:action] == "show" && permalink = extract_permalink(options)
             anchor = "##{options.delete(:anchor)}"
             query_string = "?#{options.except(:_positional_keys, :_positional_args, :action, :routing_type, :controller, :use_route, :only_path, :format).to_query}"
             "/#{permalink.path}#{query_string unless query_string == "?"}#{anchor unless anchor == "#"}"
