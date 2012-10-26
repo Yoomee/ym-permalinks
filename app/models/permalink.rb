@@ -17,7 +17,7 @@ class Permalink < ActiveRecord::Base
   
   def generate_unique_path!(title = resource.to_s)
     if path.blank? && title.present?
-      path_name_root = title.gsub(/»/, "").to_url
+      path_name_root = title.to_url.parameterize
       unique_path_name = path_name_root.dup
       permalinks = new_record? ? self.class : self.class.where("id != ?",self.id)
       count = 0
@@ -58,7 +58,7 @@ class Permalink < ActiveRecord::Base
   end
   
   def path_is_valid_url
-    if path.present? && (path != path.to_url)
+    if path.present? && (path != path.to_url.parameterize)
       errors.add(:path, "is invalid")
     end
   end
