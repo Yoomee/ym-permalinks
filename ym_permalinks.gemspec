@@ -7,8 +7,8 @@ require "ym_permalinks/version"
 Gem::Specification.new do |s|
   s.name        = "ym_permalinks"
   s.version     = YmPermalinks::VERSION
-  s.authors     = ["Matt Atkins", "Ian Mooney", "Si Wilkins"]
-  s.email       = ["matt@yoomee.com", "ian@yoomee.com", "si@yoomee.com"]
+  s.authors     = ["Matt Atkins", "Ian Mooney", "Si Wilkins", "Edward Andrews"]
+  s.email       = ["matt@yoomee.com", "ian@yoomee.com", "si@yoomee.com", "edward@yoomee.com"]
   s.homepage    = "http://www.yoomee.com"
   s.summary     = "Summary of YmPermalinks."
   s.description = "Description of YmPermalinks."
@@ -27,5 +27,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'shoulda-matchers'
   s.add_development_dependency "capybara"
   s.add_development_dependency "guard-rspec"
+  s.add_development_dependency "ym_tools"
 
 end
