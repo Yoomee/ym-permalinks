@@ -50,7 +50,7 @@ class Permalink < ActiveRecord::Base
   
   def path_does_not_match_existing_route
     existing_routes = Rails.application.routes.routes.collect do |route|
-      route.path.split(/\/|\(/).try(:[],1)
+      route.path.spec.to_s.split(/\/|\(/).try(:[],1)
     end.uniq.compact
     if existing_routes.include?(path)
       errors.add(:path, "has already been taken")
