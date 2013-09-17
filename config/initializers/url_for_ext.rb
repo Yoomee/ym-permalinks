@@ -14,7 +14,8 @@ module ActionDispatch
             url_for_without_permalinks(options)
           end
         else
-          if options.respond_to?(:permalink) && permalink = options.permalink
+          permalink = options.respond_to?(:permalink) ? options.permalink : nil
+          if permalink && !permalink.changed?
             "/#{permalink.path}"
           else
             url_for_without_permalinks(options)
@@ -27,7 +28,7 @@ module ActionDispatch
       def extract_permalink(options)
         if options[:_positional_args] && options[:_positional_args].size == 1
           resource = options[:_positional_args].first
-          if resource.respond_to?(:permalink) && resource.permalink
+          if resource.respond_to?(:permalink) && resource.permalink && !resource.permalink.changed?
             resource.permalink
           else
             nil

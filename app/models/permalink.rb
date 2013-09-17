@@ -1,14 +1,16 @@
 class Permalink < ActiveRecord::Base
+
+  include YmCore::Model
   
   belongs_to :resource, :polymorphic => true
 
-  validates :path, :presence => true, :uniqueness => {:case_sensitive => false, :unless => :old_exists?}
-  #validates :resource, :presence => true
+  validates :path, :presence => true, :uniqueness => {:case_sensitive => false, :scope => :active}
 
-  validate  :path_does_not_match_existing_route
-  validate  :path_is_valid_url
+  validate :path_does_not_match_existing_route
+  validate :path_is_valid_url
   
-  after_update :handle_old_permalinks
+  after_update :create_inactive_permalink
+  after_update :delete_duplicate_permalinks
   
   def initialize(*args)
     super(*args)
@@ -34,20 +36,14 @@ class Permalink < ActiveRecord::Base
   end
 
   private
-  def handle_old_permalinks
-    old_versions.destroy_all if old_versions.present?
-    Permalink.create(:path => path_was, :resource => resource, :active => false)
+  def create_inactive_permalink
+    resource.permalinks.create(:active => false, :path => path_was) if path_changed?
   end
 
-  def old_exists?
-    old_versions.present?
+  def delete_duplicate_permalinks
+    Permalink.without(self).where(:path => path, :active => false).delete_all
   end
 
-  def old_versions
-    return [] if resource.nil?
-    Permalink.where(:resource_id => resource.id, :resource_type => resource.class.to_s, :path => path).where(["id <> ?", id])
-  end
-  
   def path_does_not_match_existing_route
     existing_routes = Rails.application.routes.routes.collect do |route|
       route.path.spec.to_s.split(/\/|\(/).try(:[],1)
