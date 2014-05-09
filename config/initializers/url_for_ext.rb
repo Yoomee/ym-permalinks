@@ -20,7 +20,7 @@ module ActionDispatch
           return nil if options.delete(:permalink) == false
           if options[:controller] && options[:id]
             return Permalink.find_by_resource_type_and_resource_id(options[:controller].classify, options[:id])
-          elsif options[:_positional_args] && options[:_positional_args].size == 1
+          elsif options[:_positional_args]
             resource = options[:_positional_args].first
             if resource.respond_to?(:permalink) && resource.permalink
               return resource.permalink
