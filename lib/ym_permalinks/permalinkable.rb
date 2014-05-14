@@ -1,7 +1,7 @@
 module YmPermalinks::Permalinkable
   def self.included(base)
     base.has_many :permalinks, :as => :resource, :autosave => true, :dependent => :destroy
-    base.has_one :permalink, :as => :resource, :conditions => {:active => true}, :autosave => true
+    base.has_one :permalink, -> {where(:active => true)}, :as => :resource, :autosave => true
     base.before_validation :set_permalink_path
     base.after_validation :set_permalink_errors
   end
