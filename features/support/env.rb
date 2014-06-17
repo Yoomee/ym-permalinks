@@ -7,7 +7,7 @@ ENV["RAILS_ROOT"] ||= File.dirname(__FILE__) + "../../../test/dummy"
 # files.
 
 require 'cucumber/rails'
-require 'factory_girl_rails'
+require 'ym_test/cucumber'
 
 # Capybara defaults to CSS3 selectors rather than XPath.
 # If you'd prefer to use XPath, just uncomment this line and adjust any
@@ -59,6 +59,3 @@ ActionController::Base.allow_rescue = false
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
 
-
-# make factory girl methods available
-World(FactoryGirl::Syntax::Methods)
